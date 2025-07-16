@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>قائمة السيارات</title>
+    <link rel="stylesheet" href="{% static 'cars_app/style.css' %}">
+</head>
+<body>
+    <div style="text-align: left;">
+    <a href="{% url 'logout' %}">
+        <button type="button">تسجيل الخروج</button>
+    </a>
+</div>
+
+    <div class="container">
+
+        <h2>قائمة السيارات</h2>
+
+        <br>
+        <p>عدد نتائج البحث: {{ result_count }} من أصل {{ total_count }} سجل</p>
+        <br>
+        <a href="{% url 'add_car' %}">
+            <button type="button">إضافة سيارة جديدة</button>
+        </a>
+        <br><br>
+<br><br>
+<form method="get" action="{% url 'car_list' %}">
+    <input type="text" name="q" placeholder="ابحث عن سيارة..." value="{{ query }}">
+
+    <select name="sort">
+        <option value="name" {% if sort == 'name' %}selected{% endif %}>الاسم</option>
+        <option value="model" {% if sort == 'model' %}selected{% endif %}>الموديل</option>
+        <option value="color" {% if sort == 'color' %}selected{% endif %}>اللون</option>
+        <option value="price" {% if sort == 'price' %}selected{% endif %}>السعر</option>
+    </select>
+
+    <select name="order">
+        <option value="asc" {% if order == 'asc' %}selected{% endif %}>تصاعدي</option>
+        <option value="desc" {% if order == 'desc' %}selected{% endif %}>تنازلي</option>
+    </select>
+
+    <select name="per_page">
+        <option value="5" {% if per_page == 5 %}selected{% endif %}>5</option>
+        <option value="10" {% if per_page == 10 %}selected{% endif %}>10</option>
+        <option value="50" {% if per_page == 50 %}selected{% endif %}>50</option>
+        <option value="100" {% if per_page == 100 %}selected{% endif %}>100</option>
+    </select>
+
+    <button type="submit">بحث / ترتيب</button>
+</form>
+
+
+<table border="1">
+    <tr>
+        <th>الاسم</th>
+        <th>الموديل</th>
+        <th>اللون</th>
+        <th>السعر</th>
+        <th>الإجراءات</th>
+    </tr>
+    {% for car in cars %}
+    <tr>
+        <td>{{ car.name }}</td>
+        <td>{{ car.model }}</td>
+        <td>{{ car.color }}</td>
+        <td>{{ car.price }}</td>
+        <td>
+            <a href="{% url 'edit_car' car.id %}">تعديل</a> |
+            <a href="{% url 'delete_car' car.id %}" onclick="return confirm('هل أنت متأكد أنك تريد حذف هذه السيارة؟');">حذف</a>
+
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+<div>
+    <span>الصفحة {{ page_obj.number }} من {{ page_obj.paginator.num_pages }}</span>
+</div>
+
+<div style="margin-top: 20px; direction: rtl; text-align: center;">
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}&sort={{ sort }}&order={{ order }}&per_page={{ per_page }}">الأخير</a>
+        <a href="?page={{ page_obj.next_page_number }}&q={{ query }}&sort={{ sort }}&order={{ order }}&per_page={{ per_page }}">التالي</a>
+    {% endif %}
+
+    <span style="margin: 0 10px;">صفحة {{ page_obj.number }} من {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}&sort={{ sort }}&order={{ order }}&per_page={{ per_page }}">السابق</a>
+        <a href="?page=1&q={{ query }}&sort={{ sort }}&order={{ order }}&per_page={{ per_page }}">الأول</a>
+    {% endif %}
+</div>
+</body>
+</html>
