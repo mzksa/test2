@@ -3,12 +3,10 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# استخدم SECRET_KEY من متغير بيئة (أفضل في الإنتاج)
 SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
 
 DEBUG = False
 
-# في Render، يمكنك البدء بـ '*'
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
@@ -23,6 +21,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ مهم لتقديم ملفات static
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -68,6 +67,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # مهم جداً لـ collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# ✅ لتفعيل ضغط الملفات وتقديمها بكفاءة
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
