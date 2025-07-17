@@ -1,0 +1,14 @@
+asgiref==3.8.1
+distlib==0.3.9
+Django==5.2.4
+Faker==37.4.0
+filelock==3.18.0
+platformdirs==4.3.8
+pywebio==1.8.4
+sqlparse==0.5.3
+tornado==6.5.1
+tzdata==2025.2
+ua-parser==1.0.1
+ua-parser-builtins==0.18.0.post1
+user-agents==2.2.0
+virtualenv==20.31.2

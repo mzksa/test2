@@ -1,12 +1,15 @@
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'your-secret-key'
+# استخدم SECRET_KEY من متغير بيئة (أفضل في الإنتاج)
+SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key')
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# في Render، يمكنك البدء بـ '*'
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,9 +65,9 @@ LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # مهم جداً لـ collectstatic
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
