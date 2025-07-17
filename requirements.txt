@@ -13,3 +13,4 @@ ua-parser-builtins==0.18.0.post1
 user-agents==2.2.0
 virtualenv==20.31.2
 gunicorn
+whitenoise  ← ✅ أضف هذا السطر
